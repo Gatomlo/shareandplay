@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="{% static "boostrap/css/bootstrap.min.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "dataTables/media/css/jquery.dataTables.css" %}" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li><a href="/catalogue/accueil" role="tab" data-toggle="tab">Catalogue</a></li>
+                  <li><a href="#profile" role="tab" data-toggle="tab">Mes jeux</a></li>
+                  <li><a href="#messages" role="tab" data-toggle="tab">Mes prêts</a></li>
+                  <li><a href="#settings" role="tab" data-toggle="tab">Mes emprunts</a></li>
+                  <li class="active"><a href="#settings" role="tab" data-toggle="tab">{{ jeu.nomDuJeu }}</a></li>
+                </ul>
+                </br>
+            </div>
+          <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Présentation du jeu
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                  <h4>{{ jeu.nomDuJeu }}</h4>
+                  <img src="{{ MEDIA_URL }}{{ jeu.image.url }}"></img>
+                  <strong>Description:</strong></br>
+                  {{ jeu.description }}</br></br>
+                  <strong>Genre:</strong></br>
+                  {% for genre in jeu.genre.all %}{{ genre }}<br/>{% endfor %}</br>
+                  <strong>Type de jeu:</strong></br>
+                  {% for type in jeu.typeDeJeu.all %}{{ type }}<br/>{% endfor %}</br>
+                  <strong>Public:</strong></br>
+                  {{ jeu.public }}</br></br>
+                  <strong>Durée:</strong></br>
+                  Entre {{ jeu.dureeMin }} et {{ jeu.dureeMax }} minutes</br></br>
+                  <strong>Nombre de joueur:</strong></br>
+                  De {{ jeu.nombreDeJoueurMin }} à {{ jeu.nombreDeJoueurMax }}</br></br>
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingTwo">
+                <h4 class="panel-title">
+                  <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Emprunt
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+                1
+                </div>
+              </div>
+            </div>
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="headingThree">
+                <h4 class="panel-title">
+                  <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Avis
+                  </a>
+                </h4>
+              </div>
+              <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                <div class="panel-body">
+                3
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="{% static "boostrap/js/bootstrap.min.js" %}"></script>
+    </body>
+<html>

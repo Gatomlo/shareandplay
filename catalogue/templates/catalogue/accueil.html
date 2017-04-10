@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="{% static "boostrap/css/bootstrap.min.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "dataTables/media/css/jquery.dataTables.css" %}" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="active"><a href="#home" role="tab" data-toggle="tab">Catalogue</a></li>
+                  <li><a href="#profile" role="tab" data-toggle="tab">Mes jeux</a></li>
+                  <li><a href="#messages" role="tab" data-toggle="tab">Mes prêts</a></li>
+                  <li><a href="#settings" role="tab" data-toggle="tab">Mes emprunts</a></li>
+                </ul>
+                </br>
+                <table class="table" id="catalogue"  width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>Nom du jeu</th>
+                        <th>Description</th>
+                        <th>Genre</th>
+                        <th>Type</th>
+                        <th>Public</th>
+                        <th>Durée -</th>
+                        <th>Durée +</th>
+                        <th>Joueurs -</th>
+                        <th>Joueurs +</th>
+                      </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                          <th>Nom du jeu</th>
+                          <th>Description</th>
+                          <th>Genre</th>
+                          <th>Type</th>
+                          <th>Public</th>
+                          <th>Durée -</th>
+                          <th>Durée +</th>
+                          <th>Joueurs -</th>
+                          <th>Joueurs +</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for jeu in jeux %}
+                            <tr>
+                            	<td><a href="fiche/{{ jeu.id }}">{{ jeu.nomDuJeu }}</a></td>
+                                <td>{{ jeu.description }}</td>
+                                <td>{% for genre in jeu.genre.all %}{{ genre }}<br/>{% endfor %}</td>
+                                <td>{% for type in jeu.typeDeJeu.all %}{{ type }}<br/>{% endfor %}</td>
+                                <td>{{ jeu.public }}</td>
+                                <td>{{ jeu.dureeMin }}</td>
+                                <td>{{ jeu.dureeMax }}</td>
+                                <td>{{ jeu.nombreDeJoueurMin }}</td>
+                                <td>{{ jeu.nombreDeJoueurMax }}</td>
+                            </tr>
+                        {% empty %}
+                            <p>Il n'y a aucun jeu dans la ludothèque.</p>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="{% static "boostrap/js/bootstrap.min.js" %}"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="{% static "dataTables/media/js/jquery.dataTables.min.js" %}"></script>
+        <script>
+            $(document).ready(function() {
+                $('#catalogue').DataTable( {
+                    stateSave: true,
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/French.json"
+                    }
+                } );
+            } );
+        </script>
+    </body>
+</html>
