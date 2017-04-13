@@ -30,3 +30,9 @@ def fiche(request,id):
     jeu =  get_object_or_404(Jeux, id=id)
 
     return render(request, 'catalogue/fiche.html', {'jeu': jeu})
+
+def profil(request,id):
+
+    profil = User.profil
+
+    return render(request, 'catalogue/profil.html', {'profil': profil})

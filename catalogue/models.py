@@ -68,7 +68,7 @@ class Emprunt(models.Model):
         return self.empruntValide
 
 class Proprietaire(models.Model):
-    user = models.ForeignKey('auth.User')
+    user = models.OneToOneField('auth.User',related_name='profil')
     nomDuProprietaire = models.CharField(max_length=50)
     telephone = models.CharField(max_length=15)
     rue = models.CharField(max_length=50)

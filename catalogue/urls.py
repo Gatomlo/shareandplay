@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^nouveauJeu$', views.nouveauJeu, name="nouveauJeu"),
     url(r'^nouveauGenre$', views.nouveauGenre, name="nouveauGenre"),
     url(r'^fiche/(?P<id>\d+)$', views.fiche, name="fiche"),
+    url(r'^profil/(?P<id>\d+)$', views.profil, name="profil"),
 ]
