@@ -17,7 +17,7 @@ class Jeux(models.Model):
     nombreDeJoueurMax = models.IntegerField(verbose_name="Nombre de joueur maximum",null=True)
     dureeMin = models.IntegerField(verbose_name="Durée minimum",null=True)
     dureeMax = models.IntegerField(verbose_name="Durée maximum",null=True)
-    image = models.ImageField(verbose_name="Image",upload_to="photos/")
+    image = models.ImageField(verbose_name="Image",upload_to="photos_jeux/")
     extension = models.BooleanField(default=False)
     proprietaire = models.ForeignKey('auth.User')
     disponible = models.BooleanField(default=True)

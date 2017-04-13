@@ -2,6 +2,7 @@
 from django.shortcuts import render
 from catalogue.models import *
 from .forms import *
+from django.shortcuts import get_object_or_404
 
 def accueil(request):
     jeux = Jeux.objects.all()
@@ -23,6 +24,6 @@ def nouveauGenre(request):
     return render(request, 'catalogue/nouveauGenre.html', locals())
 
 def fiche(request,id):
-    jeu = Jeux.objects.get(id=id)
+    jeu =  get_object_or_404(Jeux, id=id)
 
     return render(request, 'catalogue/fiche.html', {'jeu': jeu})
