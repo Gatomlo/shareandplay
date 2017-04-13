@@ -15,8 +15,10 @@ def connexion(request):
             user = authenticate(username=username, password=password)  # Nous vérifions si les données sont correctes
             if user:  # Si l'objet renvoyé n'est pas None
                 login(request, user)  # nous connectons l'utilisateur
+                return redirect('catalogue/accueil')
             else: # sinon une erreur sera affichée
                 error = True
+
     else:
         form = ConnexionForm()
 
@@ -26,4 +28,4 @@ def deconnexion(request):
 
     logout(request)
 
-    return redirect(reverse(connexion))
+    return redirect('catalogue/accueil')

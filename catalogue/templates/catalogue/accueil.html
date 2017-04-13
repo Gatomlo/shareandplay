@@ -7,12 +7,20 @@
     </head>
     <body>
         <div class="panel panel-default">
+          {% if user.is_authenticated %}
+          <a class="btn btn-lg btn-primary" href="../deconnexion" data-toggle="modal">Deconnexion</a>
+          {% else %}
+          <a class="btn btn-lg btn-primary" href="../connexion" data-toggle="modal">Connexion</a>
+          {% endif %}
+
             <div class="panel-body">
                 <ul class="nav nav-tabs" role="tablist">
                   <li class="active"><a href="#home" role="tab" data-toggle="tab">Catalogue</a></li>
-                  <li><a href="#profile" role="tab" data-toggle="tab">Mes jeux</a></li>
-                  <li><a href="#messages" role="tab" data-toggle="tab">Mes prêts</a></li>
-                  <li><a href="#settings" role="tab" data-toggle="tab">Mes emprunts</a></li>
+                  {% if user.is_authenticated %}
+                    <li><a href="#profile" role="tab" data-toggle="tab">Mes jeux</a></li>
+                    <li><a href="#messages" role="tab" data-toggle="tab">Mes prêts</a></li>
+                    <li><a href="#settings" role="tab" data-toggle="tab">Mes emprunts</a></li>
+                  {% endif %}
                 </ul>
                 </br>
                 <table class="table" id="catalogue"  width="100%" cellspacing="0">
