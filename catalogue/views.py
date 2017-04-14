@@ -4,11 +4,19 @@ from catalogue.models import *
 from .forms import *
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 def accueil(request):
     jeux = Jeux.objects.all()
 
     return render(request, 'catalogue/accueil.html', {'jeux': jeux})
+
+@login_required
+def mesJeux(request):
+    
+    jeux = Jeux.objects.filter(proprietaire=request.user.id)
+
+    return render(request, 'catalogue/mesJeux.html', {'jeux': jeux})
 
 @login_required
 def nouveauJeu(request):

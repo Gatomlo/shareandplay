@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="{% static "boostrap/css/bootstrap.min.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "fontawesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "filtrify/css/filtrify.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "css/isotope.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "css/catalogue.css" %}" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <div class="panel panel-default">
+          {% if user.is_authenticated %}
+          <a class="btn btn-lg btn-primary" href="../deconnexion" data-toggle="modal">Deconnexion</a>
+          {% else %}
+          <a class="btn btn-lg btn-primary" href="../connexion" data-toggle="modal">Connexion</a>
+          {% endif %}
+
+            <div class="panel-body">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li><a href="#home" role="tab" data-toggle="tab">Catalogue</a></li>
+                  {% if user.is_authenticated %}
+                    <li  class="active"><a href="#profile" role="tab" data-toggle="tab">Mes jeux</a></li>
+                    <li><a href="#messages" role="tab" data-toggle="tab">Mes prêts</a></li>
+                    <li><a href="#settings" role="tab" data-toggle="tab">Mes emprunts</a></li>
+                    <li><a href="profil/{{user.id}}" role="tab" data-toggle="tab">Mon profil</a></li>
+                  {% endif %}
+                </ul>
+                </br>
+                <div id="placeHolder"></div><br/><br/>
+
+                <div id="reset" style="display: none;"><button>reset</button></div>
+
+                <div id="pagination"></div>
+
+                <ul id="container">
+                    {% for jeu in jeux %}
+                        <li data-nom="{{ jeu.nomDuJeu }}"
+                            data-genre="{% for genre in jeu.genre.all %}{{ genre }}, {% endfor %}"
+                            data-type="{% for type in jeu.typeDeJeu.all %}{{ type }}, {% endfor %}"
+                            data-duree-Min="{{ jeu.dureeMin }}"
+                            data-duree-Max="{{ jeu.dureeMax }}"
+                            data-joueur-Max="{{ jeu.nombreDeJoueurMax }}"
+                            data-joueur-Min="{{ jeu.nombreDeJoueurMin }}">
+                            <div class="panel-heading">
+                                <a href="fiche/{{ jeu.id }}">{{ jeu.nomDuJeu }}</a></br>
+                            </div>
+                            {% if jeu.image|length > 0 %}
+                              <a href="fiche/{{ jeu.id }}"><img src="{{ MEDIA_URL }}{{jeu.image}}"  width="150px" class="img-rounded"></a>
+                            {% else %}
+                              <a href="fiche/{{ jeu.id }}"><img src="{% static "picture.png" %}"  width="150px" class="img-rounded"></a>
+                            {% endif %}
+                            <br/><br/>
+                            <i class="fa fa-cube" aria-hidden="true"></i>
+                            {% for genre in jeu.genre.all %}{{ genre }}<br/>{% endfor %}<br/>
+                            <i class="fa fa-gamepad" aria-hidden="true"></i>
+                            {% for type in jeu.typeDeJeu.all %}{{ type }}<br/>{% endfor %}<br/>
+                            <i class="fa fa-users" aria-hidden="true"></i> {{ jeu.nombreDeJoueurMin }}-{{ jeu.nombreDeJoueurMin }}<br/>
+                            <i class="fa fa-clock-o" aria-hidden="true"></i> {{ jeu.dureeMin }}-{{ jeu.dureeMax }}<br/>
+                        </li>
+                    {% endfor %}
+                  </ul>
+            </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="{% static "boostrap/js/bootstrap.min.js" %}"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="{% static "filtrify/js/filtrify.min.js" %}"></script>
+        <script src="{% static "js/isotope.min.js" %}"></script>
+        <script>
+        $(function() {
+
+            var container = $("#container");
+
+            container.isotope({
+                itemSelector : 'ul#container > li',
+                layoutMode : 'fitRows'
+            });
+
+           var ft =  $.filtrify("container", "placeHolder", {
+                hide     : false,
+                close    : true,
+                callback : function ( query, match, mismatch ) {
+                    container.isotope({ filter : $(match) });
+                    if ( mismatch.length ) $("div#reset").show();
+                    else $("div#reset").hide();
+                }
+
+            });
+            $("div#reset button").click(function() {
+       ft.reset();
+   });
+        });
+        </script>
+
+
+    </body>
+</html>

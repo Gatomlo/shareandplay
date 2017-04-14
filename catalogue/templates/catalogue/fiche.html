@@ -29,7 +29,11 @@
               <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                 <div class="panel-body">
                   <h4>{{ jeu.nomDuJeu }}</h4>
-                  <img src="{{ MEDIA_URL }}{{ jeu.image }}" height="30%" width="25%"></br>
+                  {% if jeu.image|length > 0 %}
+                    <img src="{{ MEDIA_URL }}{{ jeu.image }}" height="30%" width="25%"></br>
+                  {% else %}
+                    <img src="{% static "picture.png" %}" height="30%" width="25%"></br>
+                  {% endif %}
                   <strong>Description:</strong></br>
                   {{ jeu.description }}</br></br>
                   <strong>Genre:</strong></br>
