@@ -1,4 +1,17 @@
-Profil de {{ user.username }}</br>
-{{ user.first_name }}</br>
-{{ user.email }}</br>
-{{ user.profil.rue }}</br>
+Profil de {{ profil.username }}</br>
+<img src="{{ MEDIA_URL }}{{ profil.profil.avatar  }}" height="30%"></br></br>
+{{ profil.first_name }} {{ profil.last_name }}</br></br>
+{% if user == profil or profil.profil.afficheMail == True  %}
+  Adresse Email: {{ profil.email }}</br></br>
+{% endif %}
+{% if user == profil or profil.profil.afficheTelephone == True %}
+  Téléphone: {{ profil.profil.telephone }}</br></br>
+{% endif %}
+{% if user == profil or profil.profil.afficheAdresse == True %}
+  Adresse: </br>
+  {{ profil.profil.rue }}, {{ profil.profil.numero }}</br>
+  {{ profil.profil.codePostal }} {{ profil.profil.commune }}</br></br>
+{% endif %}
+
+
+Durée maximum de prêt: {{ profil.profil.pretParDefaut }} jours

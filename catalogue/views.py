@@ -31,8 +31,9 @@ def fiche(request,id):
 
     return render(request, 'catalogue/fiche.html', {'jeu': jeu})
 
+@login_required
 def profil(request,id):
 
-    profil = User.profil
+    profil = get_object_or_404(User, id=id)
 
     return render(request, 'catalogue/profil.html', {'profil': profil})

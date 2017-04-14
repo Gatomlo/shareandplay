@@ -8,10 +8,10 @@ class JeuxForm(forms.ModelForm):
         model = Jeux
         fields = '__all__'
 
-class ProprietaireForm(forms.ModelForm):
+class ProfilForm(forms.ModelForm):
     class Meta:
-        model = Proprietaire
-        fields = ('nomDuProprietaire',)
+        model = Profil
+        fields = '__all__'
 
 class GenreForm(forms.ModelForm):
     class Meta:

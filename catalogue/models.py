@@ -67,18 +67,18 @@ class Emprunt(models.Model):
     def __str__(self):
         return self.empruntValide
 
-class Proprietaire(models.Model):
+class Profil(models.Model):
     user = models.OneToOneField('auth.User',related_name='profil')
-    nomDuProprietaire = models.CharField(max_length=50)
+    avatar = models.ImageField(verbose_name="Image",upload_to="avatars/")
     telephone = models.CharField(max_length=15)
     rue = models.CharField(max_length=50)
     numero = models.IntegerField()
     codePostal = models.IntegerField()
     commune = models.CharField(max_length=50)
-    afficheMail = models.BooleanField(default=False)
-    afficheTelephone = models.BooleanField(default=False)
-    afficheAdresse = models.BooleanField(default=False)
+    afficheMail = models.BooleanField(default=False,verbose_name="Afficher Email")
+    afficheTelephone = models.BooleanField(default=False,verbose_name="Afficher téléphone")
+    afficheAdresse = models.BooleanField(default=False,verbose_name="Afficher adresse")
     pretParDefaut = models.IntegerField(default=15,verbose_name="Durée des prêts par défaut")
 
     def __str__(self):
-        return self.nomDuProprietaire
+        return self.user.username
