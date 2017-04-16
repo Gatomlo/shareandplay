@@ -12,4 +12,6 @@ urlpatterns = [
     url(r'^nouveauGenre$', views.nouveauGenre, name="nouveauGenre"),
     url(r'^fiche/(?P<id>\d+)$', views.fiche, name="fiche"),
     url(r'^profil/(?P<id>\d+)$', views.profil, name="profil"),
+    url(r'^supprimer/(?P<id>\d+)$', views.supprimer, name="supprimer"),
+    url(r'^comfirmer/(?P<id>\d+)$', views.comfirmer, name="comfirmer"),
 ]

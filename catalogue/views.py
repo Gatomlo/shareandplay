@@ -48,3 +48,15 @@ def profil(request,id):
     profil = get_object_or_404(User, id=id)
 
     return render(request, 'catalogue/profil.html', {'profil': profil})
+
+@login_required
+def comfirmer(request,id):
+    jeu = get_object_or_404(Jeux, id=id)
+    return render(request, 'catalogue/validation.html', {'jeu': jeu})
+
+@login_required
+def supprimer(request,id):
+    jeu = get_object_or_404(Jeux, id=id)
+    if jeu.proprietaire.id == request.user.id:
+        jeu.delete()
+        return HttpResponseRedirect(reverse('mesJeux'))

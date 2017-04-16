@@ -20,17 +20,6 @@
            <div id="myModal" class="modal fade">
                <div class="modal-dialog">
                    <div class="modal-content">
-                       <div class="modal-header">
-                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                           <h4 class="modal-title">Modal Window</h4>
-                       </div>
-                       <div class="modal-body">
-                        contenu
-                       </div>
-                       <div class="modal-footer">
-                           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                           <button type="button" class="btn btn-primary">Send</button>
-                       </div>
                    </div>
                </div>
            </div>
@@ -61,6 +50,9 @@
                             data-joueur-Min="{{ jeu.nombreDeJoueurMin }}">
                             <div class="panel-heading">
                                 <a class="launch-modal"  data-url="fiche/{{ jeu.id }}">{{ jeu.nomDuJeu }}</a></br>
+                                <a class="btn btn-large btn-primary launch-modal" data-url="comfirmer/{{ jeu.id }}">
+                                  <i class="fa fa-times" aria-hidden="true"></i>
+                                </a></br>
                             </div>
                             {% if jeu.image|length > 0 %}
                               <img src="{{ MEDIA_URL }}{{jeu.image}}"  width="150px" class="img-rounded launch-modal"  data-url="fiche/{{ jeu.id }}">
