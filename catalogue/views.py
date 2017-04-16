@@ -1,10 +1,12 @@
 #-*- coding: utf-8 -*-
-from django.shortcuts import render
+from django.shortcuts import render, reverse
 from catalogue.models import *
 from .forms import *
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
 
 def accueil(request):
     jeux = Jeux.objects.all()
@@ -13,16 +15,17 @@ def accueil(request):
 
 @login_required
 def mesJeux(request):
-    
+
     jeux = Jeux.objects.filter(proprietaire=request.user.id)
 
     return render(request, 'catalogue/mesJeux.html', {'jeux': jeux})
 
 @login_required
 def nouveauJeu(request):
-    form = JeuxForm(request.POST or None)
+    form = JeuxForm(request.POST, request.FILES or None)
     if form.is_valid():
         form.save()
+        return HttpResponseRedirect(reverse('mesJeux'))
 
     return render(request, 'catalogue/nouveauJeu.html', locals())
 

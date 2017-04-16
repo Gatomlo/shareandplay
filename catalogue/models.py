@@ -13,16 +13,16 @@ class Jeux(models.Model):
     genre = models.ManyToManyField('Genre')
     typeDeJeu = models.ManyToManyField('Type',verbose_name="Type de jeu")
     public = models.CharField(max_length=50)
-    nombreDeJoueurMin = models.IntegerField(verbose_name="Nombre de joueur minimum",null=True)
-    nombreDeJoueurMax = models.IntegerField(verbose_name="Nombre de joueur maximum",null=True)
-    dureeMin = models.IntegerField(verbose_name="Durée minimum",null=True)
-    dureeMax = models.IntegerField(verbose_name="Durée maximum",null=True)
-    image = models.ImageField(verbose_name="Image",upload_to="photos_jeux/")
+    nombreDeJoueurMin = models.IntegerField(verbose_name="Nombre de joueur minimum",null=True,blank=True)
+    nombreDeJoueurMax = models.IntegerField(verbose_name="Nombre de joueur maximum",null=True,blank=True)
+    dureeMin = models.IntegerField(verbose_name="Durée minimum",null=True,blank=True)
+    dureeMax = models.IntegerField(verbose_name="Durée maximum",null=True,blank=True)
+    image = models.ImageField(verbose_name="Image",upload_to="photos_jeux/",blank=True)
     extension = models.BooleanField(default=False)
     proprietaire = models.ForeignKey('auth.User')
     disponible = models.BooleanField(default=True)
     pretable = models.BooleanField(default=True)
-    dureeDuPret = models.IntegerField(verbose_name="Durée du prêt",null=True)
+    dureeDuPret = models.IntegerField(verbose_name="Durée du prêt",null=True,blank=True)
 
     def __str__(self):
         return self.nomDuJeu

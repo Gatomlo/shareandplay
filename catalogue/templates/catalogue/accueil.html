@@ -9,24 +9,42 @@
         <link href="{% static "css/catalogue.css" %}" rel="stylesheet" type="text/css" />
     </head>
     <body>
+      <!-- Modale -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title">Titre de la modale</h4>
+                  </div>
+                  <div class="modal-body">
+
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-primary"><i class="icon icon-check icon-lg"></i> Valide</button>
+                      <button type="button" class="btn btn-inverse" data-dismiss="modal"><i class="icon icon-times icon-lg"></i> Fermer</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
         <div class="panel panel-default">
           {% if user.is_authenticated %}
           <a class="btn btn-lg btn-primary" href="../deconnexion" data-toggle="modal">Deconnexion</a>
           {% else %}
-          <a class="btn btn-lg btn-primary" href="../connexion" data-toggle="modal">Connexion</a>
+          <a class="btn btn-lg btn-primary launch-modal"  data-url="../connexion">Connexion</a>
           {% endif %}
-
             <div class="panel-body">
                 <ul class="nav nav-tabs" role="tablist">
-                  <li class="active"><a href="#home" role="tab" data-toggle="tab">Catalogue</a></li>
+                  <li class="active"><a href="#home" role="tab">Catalogue</a></li>
                   {% if user.is_authenticated %}
-                    <li><a href="mesJeux" role="tab" data-toggle="tab">Mes jeux</a></li>
-                    <li><a href="#messages" role="tab" data-toggle="tab">Mes prêts</a></li>
-                    <li><a href="#settings" role="tab" data-toggle="tab">Mes emprunts</a></li>
-                    <li><a href="profil/{{user.id}}" role="tab" data-toggle="tab">Mon profil</a></li>
+                    <li><a href="mesJeux" role="tab" >Mes jeux</a></li>
+                    <li><a href="#messages" role="tab">Mon historique</a></li>
+                    <li><a href="profil/{{user.id}}" role="tab">Mon profil</a></li>
                   {% endif %}
                 </ul>
                 </br>
+
                 <div id="placeHolder"></div><br/><br/>
 
                 <div id="reset" style="display: none;"><button>reset</button></div>
@@ -44,12 +62,12 @@
                             data-type="{% for type in jeu.typeDeJeu.all %}{{ type }}, {% endfor %}"
                             data-nom="{{ jeu.nomDuJeu }}">
                             <div class="panel-heading">
-                                <a href="fiche/{{ jeu.id }}">{{ jeu.nomDuJeu }}</a></br>
+                                <a class="launch-modal"  data-url="fiche/{{ jeu.id }}">{{ jeu.nomDuJeu }}</a></br>
                             </div>
                             {% if jeu.image|length > 0 %}
-                              <a href="fiche/{{ jeu.id }}"><img src="{{ MEDIA_URL }}{{jeu.image}}"  width="150px" class="img-rounded"></a>
+                              <img src="{{ MEDIA_URL }}{{jeu.image}}"  width="150px" class="img-rounded launch-modal"  data-url="fiche/{{ jeu.id }}">
                             {% else %}
-                              <a href="fiche/{{ jeu.id }}"><img src="{% static "picture.png" %}"  width="150px" class="img-rounded"></a>
+                              <img src="{% static "picture.png" %}"  width="150px" class="img-rounded launch-modal"  data-url="fiche/{{ jeu.id }}">
                             {% endif %}
                             <br/><br/>
                             <i class="fa fa-cube" aria-hidden="true"></i>
@@ -65,9 +83,21 @@
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="{% static "boostrap/js/bootstrap.min.js" %}"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
         <script src="{% static "filtrify/js/filtrify.min.js" %}"></script>
         <script src="{% static "js/isotope.min.js" %}"></script>
+        <script type="text/javascript">
+          $(document).ready(function(){
+            $(".launch-modal").click(function(){
+                var content = $(this).data('url');
+              $("#myModal").modal({
+                remote: content,
+              });
+            });
+          });
+          $('#myModal').on('hide.bs.modal', function(){
+             $(this).removeData('bs.modal');
+          });
+        </script>
         <script>
         $(function() {
 

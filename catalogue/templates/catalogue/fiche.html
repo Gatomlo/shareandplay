@@ -1,22 +1,7 @@
+<div class="modal-body">
 {% load static %}
-<!DOCTYPE html>
-<html>
-    <head>
-        <link href="{% static "boostrap/css/bootstrap.min.css" %}" rel="stylesheet" type="text/css" />
-        <link href="{% static "dataTables/media/css/jquery.dataTables.css" %}" rel="stylesheet" type="text/css" />
-    </head>
+
     <body>
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <ul class="nav nav-tabs" role="tablist">
-                  <li><a href="/catalogue/accueil" role="tab" data-toggle="tab">Catalogue</a></li>
-                  <li><a href="#profile" role="tab" data-toggle="tab">Mes jeux</a></li>
-                  <li><a href="#messages" role="tab" data-toggle="tab">Mes prêts</a></li>
-                  <li><a href="#settings" role="tab" data-toggle="tab">Mes emprunts</a></li>
-                  <li class="active"><a href="#settings" role="tab" data-toggle="tab">{{ jeu.nomDuJeu }}</a></li>
-                </ul>
-                </br>
-            </div>
           <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
             <div class="panel panel-default">
               <div class="panel-heading" role="tab" id="headingOne">
@@ -49,6 +34,7 @@
                 </div>
               </div>
             </div>
+            {% if user.is_authenticated %}
             <div class="panel panel-default">
               <div class="panel-heading" role="tab" id="headingTwo">
                 <h4 class="panel-title">
@@ -63,6 +49,7 @@
                 </div>
               </div>
             </div>
+            {% endif %}
             <div class="panel panel-default">
               <div class="panel-heading" role="tab" id="headingThree">
                 <h4 class="panel-title">
@@ -80,7 +67,7 @@
           </div>
           </div>
         </div>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="{% static "boostrap/js/bootstrap.min.js" %}"></script>
-    </body>
-<html>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-inverse" type="button" data-dismiss="modal"><i class="icon icon-times icon-lg"></i> Fermer</button>
+</div>
