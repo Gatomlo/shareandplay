@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^profil/(?P<id>\d+)$', views.profil, name="profil"),
     url(r'^supprimer/(?P<id>\d+)$', views.supprimer, name="supprimer"),
     url(r'^comfirmer/(?P<id>\d+)$', views.comfirmer, name="comfirmer"),
+    url(r'^editer/(?P<id>\d+)$', views.editer, name="editer"),
 ]

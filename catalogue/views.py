@@ -24,6 +24,8 @@ def mesJeux(request):
 def nouveauJeu(request):
     form = JeuxForm(request.POST, request.FILES or None)
     if form.is_valid():
+        jeu = form.save(commit=False)
+        jeu.proprietaire = request.user
         form.save()
         return HttpResponseRedirect(reverse('mesJeux'))
 
@@ -60,3 +62,13 @@ def supprimer(request,id):
     if jeu.proprietaire.id == request.user.id:
         jeu.delete()
         return HttpResponseRedirect(reverse('mesJeux'))
+
+@login_required
+def editer(request,id):
+    jeu = get_object_or_404(Jeux, id=id)
+    if jeu.proprietaire.id == request.user.id:
+        form = JeuxForm(instance=jeu)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('mesJeux'))
+        return render(request, 'catalogue/editerJeu.html', locals())

@@ -53,6 +53,9 @@
                                 <a class="btn btn-large btn-primary launch-modal" data-url="comfirmer/{{ jeu.id }}">
                                   <i class="fa fa-times" aria-hidden="true"></i>
                                 </a></br>
+                                <a class="btn btn-large btn-primary launch-modal" data-url="editer/{{ jeu.id }}">
+                                  <i class="fa fa-pencil" aria-hidden="true"></i>
+                                </a></br>
                             </div>
                             {% if jeu.image|length > 0 %}
                               <img src="{{ MEDIA_URL }}{{jeu.image}}"  width="150px" class="img-rounded launch-modal"  data-url="fiche/{{ jeu.id }}">

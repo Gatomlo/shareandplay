@@ -6,7 +6,7 @@ from .models import *
 class JeuxForm(forms.ModelForm):
     class Meta:
         model = Jeux
-        fields = '__all__'
+        exclude = ('proprietaire',)
 
 class ProfilForm(forms.ModelForm):
     class Meta:
