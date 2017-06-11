@@ -69,7 +69,7 @@ def editerJeu(request,id):
     if jeu.proprietaire.id == request.user.id:
         form = JeuxForm(instance=jeu)
         if request.POST:
-            form = JeuxForm(instance=jeu)
+            form = JeuxForm(request.POST, instance=jeu)
             if form.is_valid():
                 form.save()
                 return HttpResponseRedirect(reverse('mesJeux'))
