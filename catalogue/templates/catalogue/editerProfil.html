@@ -1,12 +1,16 @@
 
 <div class="modal-header">
   <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-  <h4 class="modal-title" id="myModalLabel">Editer jeu</h4>
+  <h4 class="modal-title" id="myModalLabel">Editer mon profil</h4>
 </div>
-<form action="{% url editer/{jeu.id} %}" method="post" enctype="multipart/form-data">
+<form action="{% url "editerProfil" %}" method="post" enctype="multipart/form-data">
   <div class="modal-body">
     {% csrf_token %}
-    {{ form.as_p }}
+    <h1>Mon compte:</h1>
+    {{ form2.as_p }}
+    <h1>Mon profil:</h1>
+    {{ form1.as_p }}
+
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

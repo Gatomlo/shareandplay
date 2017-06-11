@@ -57,18 +57,35 @@ def comfirmer(request,id):
     return render(request, 'catalogue/validation.html', {'jeu': jeu})
 
 @login_required
-def supprimer(request,id):
+def supprimerJeu(request,id):
     jeu = get_object_or_404(Jeux, id=id)
     if jeu.proprietaire.id == request.user.id:
         jeu.delete()
         return HttpResponseRedirect(reverse('mesJeux'))
 
 @login_required
-def editer(request,id):
+def editerJeu(request,id):
     jeu = get_object_or_404(Jeux, id=id)
     if jeu.proprietaire.id == request.user.id:
         form = JeuxForm(instance=jeu)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('mesJeux'))
-        return render(request, 'catalogue/editerJeu.html', locals())
+        if request.POST:
+            form = JeuxForm(instance=jeu)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(reverse('mesJeux'))
+        return render(request, 'catalogue/editerJeu.html', locals(),{'jeu':jeu})
+
+@login_required
+def editerProfil(request):
+    profil = get_object_or_404(Profil, user_id = request.user.id)
+    form1 = ProfilForm(instance=profil)
+    form2 = UserForm(instance=request.user)
+    if request.POST:
+        form1 = ProfilForm(request.POST, instance=profil)
+        form2 = UserForm(request.POST, instance=request.user)
+        if form1.is_valid():
+            form1.save()
+        if form2.is_valid():
+            form2.save()
+        return HttpResponseRedirect(reverse('profil',args=[request.user.id]))
+    return render(request, 'catalogue/editerProfil.html', locals())

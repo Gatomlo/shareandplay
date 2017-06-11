@@ -4,6 +4,7 @@
     <head>
         <link href="{% static "boostrap/css/bootstrap.min.css" %}" rel="stylesheet" type="text/css" />
         <link href="{% static "dataTables/media/css/jquery.dataTables.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "fontawesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css" />
     </head>
     <body>
         <div class="panel panel-default">
@@ -26,25 +27,54 @@
                   </ul>
                 </div>
 
-Profil de {{ profil.username }}</br>
+          <div id="myModal" class="modal fade">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                  </div>
+              </div>
+          </div>
+          <div>
+            Profil de {{ profil.username }}<a class="btn btn-large btn-primary launch-modal" data-url="../editerProfil">
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+            </a>
+            </br>
 
-{% if profil.profil.avatar|length > 0 %}
-  <img src="{{ MEDIA_URL }}{{ profil.profil.avatar  }}" width="15%"></br></br>
-{% else %}
-  <img src="{% static "picture.png" %}"  width="150px"></br></br>
-{% endif %}
-{{ profil.first_name }} {{ profil.last_name }}</br></br>
-{% if user == profil or profil.profil.afficheMail == True  %}
-  Adresse Email: {{ profil.email }}</br></br>
-{% endif %}
-{% if user == profil or profil.profil.afficheTelephone == True %}
-  Téléphone: {{ profil.profil.telephone }}</br></br>
-{% endif %}
-{% if user == profil or profil.profil.afficheAdresse == True %}
-  Adresse: </br>
-  {{ profil.profil.rue }}, {{ profil.profil.numero }}</br>
-  {{ profil.profil.codePostal }} {{ profil.profil.commune }}</br></br>
-{% endif %}
+            {% if profil.profil.avatar|length > 0 %}
+              <img src="{{ MEDIA_URL }}{{ profil.profil.avatar  }}" width="15%"></br></br>
+            {% else %}
+              <img src="{% static "picture.png" %}"  width="150px"></br></br>
+            {% endif %}
+            {{ profil.first_name }} {{ profil.last_name }}</br></br>
+            {% if user == profil or profil.profil.afficheMail == True  %}
+              Adresse Email: {{ profil.email }}</br></br>
+            {% endif %}
+            {% if user == profil or profil.profil.afficheTelephone == True %}
+              Téléphone: {{ profil.profil.telephone }}</br></br>
+            {% endif %}
+            {% if user == profil or profil.profil.afficheAdresse == True %}
+              Adresse: </br>
+              {{ profil.profil.rue }}, {{ profil.profil.numero }}</br>
+              {{ profil.profil.codePostal }} {{ profil.profil.commune }}</br></br>
+            {% endif %}
 
 
-Durée maximum de prêt: {{ profil.profil.pretParDefaut }} jours
+            Durée maximum de prêt: {{ profil.profil.pretParDefaut }} jours
+          </div>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="{% static "boostrap/js/bootstrap.min.js" %}"></script>
+        <script type="text/javascript">
+          $(document).ready(function(){
+            $(".launch-modal").click(function(){
+                var content = $(this).data('url');
+              $("#myModal").modal({
+                remote: content,
+              });
+            });
+          });
+          $('#myModal').on('hide.bs.modal', function(){
+             $(this).removeData('bs.modal');
+          });
+        </script>
+    </body>
+</html>
