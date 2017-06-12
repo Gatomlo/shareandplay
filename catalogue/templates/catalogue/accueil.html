@@ -4,12 +4,63 @@
     <head>
         <link href="{% static "boostrap/css/bootstrap.min.css" %}" rel="stylesheet" type="text/css" />
         <link href="{% static "fontawesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css" />
-        <link href="{% static "filtrify/css/filtrify.css" %}" rel="stylesheet" type="text/css" />
-        <link href="{% static "css/isotope.css" %}" rel="stylesheet" type="text/css" />
         <link href="{% static "css/catalogue.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "JPlist/jplist.core.min.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "JPlist/jplist.textbox-filter.min.css" %}" rel="stylesheet" type="text/css" />
     </head>
     <body>
-      <!-- Modale -->
+        <!-- demo -->
+        <div id="catalogue">
+
+           <!-- panel -->
+           <div class="jplist-panel">
+                <!-- filter by id-->
+                <div
+                    class="jplist-drop-down"
+                    data-control-type="filter-drop-down"
+                    data-control-name="id-filter"
+                    data-control-action="filter">
+                    <ul>
+                        <li><span data-path="default">Filter by category</span></li>
+                        <li><span data-path=".9">9</span></li>
+                        <li><span data-path=".8">8</span></li>
+                        <li><span data-path=".31">31</span></li>
+                        <li><span data-path=".nature">Nature</span></li>
+                        <li><span data-path=".other">Other</span></li>
+                    </ul>
+                </div>
+                <!-- filter by title -->
+                <div class="text-filter-box">
+                   <i class="fa fa-search  jplist-icon"></i>
+                   <input
+                      data-path=".title"
+                      type="text"
+                      value=""
+                      placeholder="Filter by Title"
+                      data-control-type="textbox"
+                      data-control-name="title-filter"
+                      data-control-action="filter"
+                   />
+                </div>
+           </div>
+           <!-- HTML data -->
+           <div class="list">
+               {% for jeu in jeux %}
+                <div class="list-item">
+                   <p class="title">{{jeu.nomDuJeu}}</p>
+                   <p class="{{jeu.id}}">{{jeu.id}}</p>
+                </div>
+                {% endfor %}
+           </div>
+
+           <!-- no results found -->
+           <div class="jplist-no-results">
+              <p>Aucun résultat</p>
+           </div>
+
+        </div>
+
+      <!-- Modale --><!--
       <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-dialog">
               <div class="modal-content">
@@ -36,10 +87,10 @@
           {% endif %}
             <div class="panel-body">
                 <ul class="nav nav-tabs" role="tablist">
-                  <li class="active"><a href="#" role="tab">Catalogue</a></li>
+                  <li class="active"><a href="#home" role="tab">Catalogue</a></li>
                   {% if user.is_authenticated %}
                     <li><a href="mesJeux" role="tab" >Mes jeux</a></li>
-                    <li><a href="historique" role="tab">Mon historique</a></li>
+                    <li><a href="#messages" role="tab">Mon historique</a></li>
                     <li><a href="profil/{{user.id}}" role="tab">Mon profil</a></li>
                   {% endif %}
                 </ul>
@@ -81,10 +132,14 @@
                   </ul>
             </div>
         </div>
+    -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="{% static "boostrap/js/bootstrap.min.js" %}"></script>
-        <script src="{% static "filtrify/js/filtrify.min.js" %}"></script>
-        <script src="{% static "js/isotope.min.js" %}"></script>
+        <script src="{% static "JPlist/jplist.core.min.js" %}"></script>
+        <script src="{% static "JPlist/jplist.pagination.min.js" %}"></script>
+        <script src="{% static "JPlist/jplist.sort.min.js" %}"></script>
+        <script src="{% static "JPlist/jplist.textbox-filter.min.js" %}"></script>
+        <script src="{% static "JPlist/jplist.filter-dropdown.min.js" %}"></script>
         <script type="text/javascript">
           $(document).ready(function(){
             $(".launch-modal").click(function(){
@@ -99,31 +154,17 @@
           });
         </script>
         <script>
-        $(function() {
+       $('document').ready(function(){
 
-            var container = $("#container");
+          //check all jPList javascript options here
+          $('#catalogue').jplist({
+             itemsBox: '.list',
+             itemPath: '.list-item',
+             panelPath: '.jplist-panel'
+          });
 
-            container.isotope({
-                itemSelector : 'ul#container > li',
-                layoutMode : 'fitRows'
-            });
-
-           var ft =  $.filtrify("container", "placeHolder", {
-                hide     : false,
-                close    : true,
-                callback : function ( query, match, mismatch ) {
-                    container.isotope({ filter : $(match) });
-                    if ( mismatch.length ) $("div#reset").show();
-                    else $("div#reset").hide();
-                }
-
-            });
-            $("div#reset button").click(function() {
-       ft.reset();
-   });
-        });
-        </script>
-
+       });
+       </script>
 
     </body>
 </html>
