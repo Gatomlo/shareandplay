@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="{% static "boostrap/css/bootstrap.min.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "fontawesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "datetimepicker/css/bootstrap-datepicker.min.css" %}" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        {{jeu.nomDuJeu}} - {{jeu.proprietaire}}
+        <form action="{% url 'emprunter' jeu.id %}"method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <input type="submit" value="Submit" class="btn btn-default" />
+        </form>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="{% static "boostrap/js/bootstrap.min.js" %}"></script>
+        <script src="{% static "datetimepicker/js/bootstrap-datepicker.min.js" %}"></script>
+        <script>
+            $(document).ready(function(){
+                $('#id_dateDePret').datepicker({format: 'dd/mm/yyyy'});
+                $('#id_dateDeRetourPrevue').datepicker({format: 'dd/mm/yyyy'});
+            });
+        </script>
+    </body>
+</html>

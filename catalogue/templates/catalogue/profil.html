@@ -20,9 +20,8 @@
                   <li><a href="../accueil" role="tab">Catalogue</a></li>
                   {% if user.is_authenticated %}
                     <li><a href="../mesJeux" role="tab">Mes jeux</a></li>
-                    <li><a href="#messages" role="tab">Mes prêts</a></li>
-                    <li><a href="#settings" role="tab">Mes emprunts</a></li>
-                    <li class="active"><a href="profil/{{user.id}}" role="tab">Mon profil</a></li>
+                    <li><a href="#messages" role="tab">Mon historique</a></li>
+                    <li class="active"><a href="" role="tab">Mon profil</a></li>
                   {% endif %}
                   </ul>
                 </div>

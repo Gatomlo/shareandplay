@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
+from django.db.models import Q
 
 def accueil(request):
     jeux = Jeux.objects.all()
@@ -89,3 +90,23 @@ def editerProfil(request):
             form2.save()
         return HttpResponseRedirect(reverse('profil',args=[request.user.id]))
     return render(request, 'catalogue/editerProfil.html', locals())
+
+@login_required
+def emprunter(request,id):
+    jeu = get_object_or_404(Jeux, id=id)
+    form = EmpruntForm(request.POST or None)
+    if request.POST:
+        form = EmpruntForm(request.POST or None)
+        if form.is_valid():
+            emprunt = form.save(commit=False)
+            emprunt.proprietaire = jeu.proprietaire
+            emprunt.emprunteur = request.user
+            emprunt.jeu = jeu
+            form.save()
+            return HttpResponseRedirect(reverse('accueil'))
+    return render(request, 'catalogue/emprunter.html', locals(), {'jeu':jeu})
+
+@login_required
+def historique(request):
+    historique = Emprunt.objects.filter(Q(proprietaire=request.user.id) | Q(emprunteur=request.user.id))
+    return render(request, 'catalogue/historique.html', {'historique':historique})

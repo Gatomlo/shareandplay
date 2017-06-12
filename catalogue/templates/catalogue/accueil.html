@@ -36,10 +36,10 @@
           {% endif %}
             <div class="panel-body">
                 <ul class="nav nav-tabs" role="tablist">
-                  <li class="active"><a href="#home" role="tab">Catalogue</a></li>
+                  <li class="active"><a href="#" role="tab">Catalogue</a></li>
                   {% if user.is_authenticated %}
                     <li><a href="mesJeux" role="tab" >Mes jeux</a></li>
-                    <li><a href="#messages" role="tab">Mon historique</a></li>
+                    <li><a href="historique" role="tab">Mon historique</a></li>
                     <li><a href="profil/{{user.id}}" role="tab">Mon profil</a></li>
                   {% endif %}
                 </ul>

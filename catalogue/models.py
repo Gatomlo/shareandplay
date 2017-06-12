@@ -56,11 +56,11 @@ class Emprunt(models.Model):
     proprietaire = models.ForeignKey('auth.User', related_name='preteur')
     emprunteur = models.ForeignKey('auth.User', related_name='emprunteur')
     jeu  = models.ForeignKey('Jeux')
-    dateDeCreation = models.DateTimeField(auto_now_add=True, auto_now=False,
+    dateDeCreation = models.DateField(auto_now_add=True, auto_now=False,
                                 verbose_name="Date de création")
-    dateDeRetourPrevue = models.DateTimeField()
-    dateDePret = models.DateTimeField()
-    dateDeRetour = models.DateTimeField()
+    dateDeRetourPrevue = models.DateField()
+    dateDePret = models.DateField()
+    dateDeRetour = models.DateField(null=True,blank=True)
     empruntValide = models.BooleanField(default=False)
     jeuRendu = models.BooleanField(default=False)
 
