@@ -9,10 +9,21 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.db.models import Q
 
+@login_required
 def accueil(request):
     jeux = Jeux.objects.all()
+    genres = Genre.objects.all()
+    types = Type.objects.all()
+    publics = Public.objects.all()
+    edition = False
+    onglets = OngletsOuverts.objects.filter(utilisateur=request.user.id)
 
-    return render(request, 'catalogue/accueil.html', {'jeux': jeux})
+    return render(request, 'catalogue/catalogue.html', {'jeux': jeux,
+                                                        'genres':genres,
+                                                        'types':types,
+                                                        'edition':edition,
+                                                        'publics':publics,
+                                                        'onglets':onglets})
 
 @login_required
 def mesJeux(request):
@@ -40,10 +51,27 @@ def nouveauGenre(request):
 
     return render(request, 'catalogue/nouveauGenre.html', locals())
 
+@login_required
 def fiche(request,id):
     jeu =  get_object_or_404(Jeux, id=id)
+    onglets = OngletsOuverts.objects.filter(utilisateur=request.user.id)
+    return render(request, 'catalogue/fiche.html', {'jeu': jeu,
+                                                    'onglets':onglets})
 
-    return render(request, 'catalogue/fiche.html', {'jeu': jeu})
+@login_required
+def ouvrirOnglet(request,id):
+    jeu =  get_object_or_404(Jeux, id=id)
+    if  not OngletsOuverts.objects.filter(Q(utilisateur=request.user) & Q(jeu=jeu)):
+        OngletsOuverts(jeu=jeu, utilisateur=request.user).save()
+    onglets = OngletsOuverts.objects.filter(utilisateur=request.user)
+    return render(request, 'catalogue/fiche.html', {'jeu': jeu,
+                                                    'onglets':onglets})
+
+@login_required
+def fermerOnglet(request,id):
+    onglet =  get_object_or_404(OngletsOuverts, id=id)
+    onglet.delete()
+    return HttpResponseRedirect(reverse('accueil'))
 
 @login_required
 def profil(request,id):

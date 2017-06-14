@@ -8,15 +8,15 @@ from django.contrib.auth.models import User
 class Jeux(models.Model):
     nomDuJeu = models.CharField(max_length=50,verbose_name="Nom du jeu")
     description = models.TextField(null=True,blank=True)
-    dateDeCreation = models.DateTimeField(auto_now_add=True, auto_now=False,
+    dateDeCreation = models.DateField(auto_now_add=True, auto_now=False,
                                 verbose_name="Date de création")
     genre = models.ManyToManyField('Genre')
     typeDeJeu = models.ManyToManyField('Type',verbose_name="Type de jeu")
-    public = models.CharField(max_length=50)
+    public = models.ManyToManyField('Public',verbose_name="Public")
     nombreDeJoueurMin = models.IntegerField(verbose_name="Nombre de joueur minimum",null=True,blank=True)
     nombreDeJoueurMax = models.IntegerField(verbose_name="Nombre de joueur maximum",null=True,blank=True)
-    dureeMin = models.IntegerField(verbose_name="Durée minimum",null=True,blank=True)
-    dureeMax = models.IntegerField(verbose_name="Durée maximum",null=True,blank=True)
+    ageMin = models.IntegerField(verbose_name="Age minimum",null=True,blank=True)
+    duree = models.IntegerField(verbose_name='Durée',null=True,blank=True)
     image = models.ImageField(verbose_name="Image",upload_to="photos_jeux/",blank=True)
     extension = models.BooleanField(default=False)
     proprietaire = models.ForeignKey('auth.User')
@@ -40,6 +40,20 @@ class Type(models.Model):
 
     def __str__(self):
         return self.nomDuType
+
+class Public(models.Model):
+    nomDuPublic = models.CharField(max_length=50)
+    description = models.TextField(null=True,blank=True)
+
+    def __str__(self):
+        return self.nomDuPublic
+        
+class OngletsOuverts(models.Model):
+    jeu = models.ForeignKey('Jeux', related_name='jeu')
+    utilisateur = models.ForeignKey('auth.User', related_name='utilisateur')
+
+    def __str__(self):
+        return self.jeu
 
 class Avis(models.Model):
     titre = models.CharField(max_length=50,verbose_name="Titre")

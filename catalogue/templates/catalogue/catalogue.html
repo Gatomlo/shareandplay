@@ -1,0 +1,399 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="{% static "boostrap/css/bootstrap.min.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "fontawesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "css/catalogue.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "JPlist/jplist.core.min.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "JPlist/jplist.textbox-filter.min.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "JPlist/jplist.history-bundle.min.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "JPlist/jplist.toggle-filter-bundle.min.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "JPlist/jplist.jquery-ui-bundle.min.css" %}" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    </head>
+    <body>
+      <!-- Modale -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title">Titre de la modale</h4>
+                  </div>
+                  <div class="modal-body">
+
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-primary"><i class="icon icon-check icon-lg"></i> Valide</button>
+                      <button type="button" class="btn btn-inverse" data-dismiss="modal"><i class="icon icon-times icon-lg"></i> Fermer</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+        <div class="panel panel-default">
+          {% if user.is_authenticated %}
+          <a class="btn btn-lg btn-primary" href="../deconnexion" data-toggle="modal">Deconnexion</a>
+          {% else %}
+          <a class="btn btn-lg btn-primary launch-modal"  data-url="../connexion">Connexion</a>
+          {% endif %}
+            <div class="panel-body">
+                <ul class="nav nav-tabs" role="tablist">
+                  <li class="active"><a href="#home" role="tab">Catalogue</a></li>
+                  {% if user.is_authenticated %}
+                    <li><a href="mesJeux" role="tab" >Mes jeux</a></li>
+                    <li><a href="#messages" role="tab">Mon historique</a></li>
+                    <li><a href="profil/{{user.id}}" role="tab">Mon profil</a></li>
+                    {% for onglet in onglets %}
+                        <li>
+                            <a href="fiche/{{onglet.jeu.id}}" role="tab">{{onglet.jeu.nomDuJeu}}</a>
+                            <a href="fermerOnglet/{{onglet.id}}">
+                                <i class="fa fa-times-circle" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                    {% endfor %}
+                  {% endif %}
+                </ul>
+                </br>
+                <div id="catalogue">
+                    <!-- panel -->
+                    <div class="jplist-panel">
+                        <!-- filter by genres-->
+                        <div
+                            class="jplist-drop-down"
+                            data-control-type="filter-drop-down"
+                            data-control-name="id-filter"
+                            data-control-action="filter">
+
+                            <ul>
+                                <li><span data-path="default">Filtrer par genre</span></li>
+                                {% for genre in genres %}
+                                    <li><span data-path=".{{genre.nomDuGenre}}">{{genre.nomDuGenre}}</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div></br></br>
+                        <!-- filter by types-->
+                        <div
+                            class="jplist-drop-down"
+                            data-control-type="filter-drop-down"
+                            data-control-name="id-filter"
+                            data-control-action="filter">
+
+                            <ul>
+                                <li><span data-path="default">Filtrer par types</span></li>
+                                {% for type in types %}
+                                    <li><span data-path=".{{type.nomDuType}}">{{type.nomDuType}}</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div></br></br>
+                        <!-- filter by public-->
+                        <div
+                            class="jplist-drop-down"
+                            data-control-type="filter-drop-down"
+                            data-control-name="id-filter"
+                            data-control-action="filter">
+
+                            <ul>
+                                <li><span data-path="default">Filtrer par public</span></li>
+                                {% for public in publics %}
+                                    <li><span data-path=".{{public.nomDuPublic}}">{{public.nomDuPublic}}</span></li>
+                                {% endfor %}
+                            </ul>
+                        </div></br></br>
+                        <!-- filter by title-->
+                        <div class="text-filter-box">
+                           <i class="fa fa-search  jplist-icon"></i>
+                           <input
+                              data-path=".title"
+                              type="text"
+                              value=""
+                              placeholder="Filter par titre"
+                              data-control-type="textbox"
+                              data-control-name="title-filter"
+                              data-control-action="filter"
+                           />
+                        </div></br></br>
+                        <!-- filter by duree-->
+                        <div
+                             class="jplist-range-slider"
+                             data-control-type="range-slider"
+                             data-control-name="duree"
+                             data-control-action="filter"
+                             data-path=".duree"
+                             data-slider-func="dureeSlider"
+                             data-setvalues-func="dureeValues">
+
+                             <div class="value" data-type="prev-value"></div>
+                             <div class="ui-slider" data-type="ui-slider"></div>
+                             <div class="value" data-type="next-value"></div>
+                        </div></br></br>
+                        <!-- filter by joueur min--> joueur min
+                        <div
+                             class="jplist-range-slider"
+                             data-control-type="range-slider"
+                             data-control-name="joueur-min"
+                             data-control-action="filter"
+                             data-path=".joueurMin"
+                             data-slider-func="joueurMinSlider"
+                             data-setvalues-func="joueurMinValues">
+
+                             <div class="value" data-type="prev-value"></div>
+                             <div class="ui-slider" data-type="ui-slider"></div>
+                             <div class="value" data-type="next-value"></div>
+                        </div></br></br>
+                        <!-- filter by joueur max-->joueur max
+                        <div
+                             class="jplist-range-slider"
+                             data-control-type="range-slider"
+                             data-control-name="joueur-max"
+                             data-control-action="filter"
+                             data-path=".joueurMax"
+                             data-slider-func="joueurMaxSlider"
+                             data-setvalues-func="joueurMaxValues">
+
+                             <div class="value" data-type="prev-value"></div>
+                             <div class="ui-slider" data-type="ui-slider"></div>
+                             <div class="value" data-type="next-value"></div>
+                        </div></br></br>
+                        <!-- filter by age minimum-->age min
+                        <div
+                             class="jplist-range-slider"
+                             data-control-type="range-slider"
+                             data-control-name="age-min"
+                             data-control-action="filter"
+                             data-path=".ageMin"
+                             data-slider-func="ageMinSlider"
+                             data-setvalues-func="ageMinValues">
+
+                             <div class="value" data-type="prev-value"></div>
+                             <div class="ui-slider" data-type="ui-slider"></div>
+                             <div class="value" data-type="next-value"></div>
+                        </div></br></br>
+                        <!-- filter by proprietaire-->
+                        <div class="text-filter-box">
+                           <i class="fa fa-search  jplist-icon"></i>
+                           <input
+                              data-path=".proprietaire"
+                              type="text"
+                              value=""
+                              placeholder="Filter par propriétaire"
+                              data-control-type="textbox"
+                              data-control-name="proprietaire-filter"
+                              data-control-action="filter"
+                           />
+                        </div></br></br>
+                        <button
+                            type="button"
+                            class="jplist-reset-btn"
+                            data-control-type="reset"
+                            data-control-name="reset"
+                            data-control-action="reset">
+                            Reset  <i class="fa fa-share"></i>
+                        </button>
+
+                   </div>
+                       </br></br></br>
+                   <!-- HTML data -->
+                   <div class="list">
+                       {% for jeu in jeux %}
+                        <div class="list-item">
+                           <a class="launch-modal title"  href="ouvrirOnglet/{{ jeu.id }}">{{ jeu.nomDuJeu }}</a></br>
+                           {% if jeu.image|length > 0 %}
+                             <img src="{{ MEDIA_URL }}{{jeu.image}}"  width="150px" class="img-rounded launch-modal"  data-url="fiche/{{ jeu.id }}">
+                           {% else %}
+                             <img src="{% static "picture.png" %}"  width="150px" class="img-rounded launch-modal"  data-url="fiche/{{ jeu.id }}">
+                           {% endif %}
+                            </br></br>
+                           <p class="duree">{{jeu.duree}} minutes</p>
+                           {%for genre in jeu.genre.all %}
+                           <p class="{{genre.nomDuGenre}}">{{genre.nomDuGenre}}</p>
+                           {%endfor%}
+                           {%for type in jeu.typeDeJeu.all %}
+                           <p class="{{type.nomDuType}}">{{type.nomDuType}}</p>
+                           {%endfor%}
+                           {%for public in jeu.public.all %}
+                           <p class="{{public.nomDuPublic}}">{{public.nomDuPublic}}</p>
+                           {%endfor%}
+                            <p class="joueurMin">{{jeu.nombreDeJoueurMin}} joueurs (min)</p>
+                            <p class="joueurMax">{{jeu.nombreDeJoueurMax}} joueurs (max)</p>
+                            <p class="ageMin">{{jeu.ageMin}} ans</p>
+                            <p class="proprietaire">{{jeu.proprietaire}}</p>
+                            <p class="date">{{jeu.dateDeCreation}}</p>
+                           <hr>
+                        </div>
+                        {% endfor %}
+                   </div>
+
+                    <!-- no results found -->
+                    <div class="jplist-no-results">
+                        <p>Aucun résultat</p>
+                    </div>
+
+                    <div class="jplist-panel">
+                        <!-- pagination control -->
+                        <div
+                            class="jplist-pagination"
+                            data-control-type="pagination"
+                            data-control-name="paging"
+                            data-control-action="paging"
+                            data-items-per-page="1">
+                        </div>
+                        <!-- items per page dropdown -->
+                        <div
+                             class="jplist-drop-down"
+                             data-control-type="items-per-page-drop-down"
+                             data-control-name="paging"
+                             data-control-action="paging">
+
+                             <ul>
+                               <li><span data-number="5"> 5 par page </span></li>
+                               <li><span data-number="10"> 10 par page </span></li>
+                               <li><span data-number="20" data-default="true"> 20 par page </span></li>
+                               <li><span data-number="all"> Afficher tout </span></li>
+                             </ul>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+        <script src="{% static "boostrap/js/bootstrap.min.js" %}"></script>
+        <script src="{% static "JPlist/jplist.core.min.js" %}"></script>
+        <script src="{% static "JPlist/jplist.pagination.min.js" %}"></script>
+        <script src="{% static "JPlist/jplist.sort.min.js" %}"></script>
+        <script src="{% static "JPlist/jplist.textbox-filter.min.js" %}"></script>
+        <script src="{% static "JPlist/jplist.filter-dropdown.min.js" %}"></script>
+        <script src="{% static "JPlist/jplist.history-bundle.min.js" %}"></script>
+        <script src="{% static "JPlist/jplist.toggle-filter-bundle.min.js" %}"></script>
+        <script src="{% static "JPlist/jplist.jquery-ui-bundle.min.js" %}"></script>
+        <script src="{% static "JPlist/jplist.pagination-bundle.min.js" %}"></script>
+        <script type="text/javascript">
+          $(document).ready(function(){
+            $(".launch-modal").click(function(){
+                var content = $(this).data('url');
+              $("#myModal").modal({
+                remote: content,
+              });
+            });
+          });
+          $('#myModal').on('hide.bs.modal', function(){
+             $(this).removeData('bs.modal');
+          });
+        </script>
+        <script>
+            $('document').ready(function(){
+
+               /**
+               * user defined functions
+               */
+               jQuery.fn.jplist.settings = {
+
+                  /**
+                  * Duree: jquery ui range slider
+                  */
+                  dureeSlider: function ($slider, $prev, $next){
+                     $slider.slider({
+                        min: 0
+                        ,max: 120
+                        ,range: true
+                        ,values: [0, 120]
+                        ,slide: function (event, ui){
+                           $prev.text(ui.values[0] + ' min');
+                           $next.text(ui.values[1] + ' min');
+                        }
+                     });
+                  }
+
+                  /**
+                  * Duree: jquery ui set values
+                  */
+                  ,dureeValues: function ($slider, $prev, $next){
+                     $prev.text($slider.slider('values', 0) + ' min');
+                     $next.text($slider.slider('values', 1) + ' min');
+                  }
+
+                  /**
+                  * JoueurMin: jquery ui range slider
+                  */
+                  ,joueurMinSlider: function ($slider, $prev, $next){
+                     $slider.slider({
+                        min: 0
+                        ,max: 30
+                        ,range: true
+                        ,values: [0, 30]
+                        ,slide: function (event, ui){
+                           $prev.text(ui.values[0] + ' ');
+                           $next.text(ui.values[1] + ' +');
+                        }
+                     });
+                  }
+
+                  /**
+                  * JoueurMin: jquery ui set values
+                  */
+                  ,joueurMinValues: function ($slider, $prev, $next){
+                     $prev.text($slider.slider('values', 0) + ' ');
+                     $next.text($slider.slider('values', 1) + ' +');
+                  }
+
+                  /**
+                  * JoueurMax: jquery ui range slider
+                  */
+                  ,joueurMaxSlider: function ($slider, $prev, $next){
+                     $slider.slider({
+                        min: 0
+                        ,max: 30
+                        ,range: true
+                        ,values: [0, 30]
+                        ,slide: function (event, ui){
+                           $prev.text(ui.values[0] + ' ');
+                           $next.text(ui.values[1] + ' +');
+                        }
+                     });
+                  }
+
+                  /**
+                  * JoueurMax: jquery ui set values
+                  */
+                  ,joueurMaxValues: function ($slider, $prev, $next){
+                     $prev.text($slider.slider('values', 0) + ' ');
+                     $next.text($slider.slider('values', 1) + ' +');
+                  }
+                  /**
+                  * AgeMin: jquery ui range slider
+                  */
+                  ,ageMinSlider: function ($slider, $prev, $next){
+                     $slider.slider({
+                        min: 0
+                        ,max: 99
+                        ,range: true
+                        ,values: [0, 99]
+                        ,slide: function (event, ui){
+                           $prev.text(ui.values[0] + 'ans');
+                           $next.text(ui.values[1] + 'ans');
+                        }
+                     });
+                  }
+
+                  /**
+                  * AgeMin: jquery ui set values
+                  */
+                  ,ageMinValues: function ($slider, $prev, $next){
+                     $prev.text($slider.slider('values', 0) + 'ans');
+                     $next.text($slider.slider('values', 1) + 'ans');
+                  }
+               };
+
+               $('#catalogue').jplist({
+                  itemsBox: '.list'
+                  ,itemPath: '.list-item'
+                  ,panelPath: '.jplist-panel'
+               });
+
+            });
+        </script>
+    </body>
+</html>
