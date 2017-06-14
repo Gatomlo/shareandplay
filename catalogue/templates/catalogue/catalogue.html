@@ -40,9 +40,9 @@
           {% endif %}
             <div class="panel-body">
                 <ul class="nav nav-tabs" role="tablist">
-                  <li class="active"><a href="#home" role="tab">Catalogue</a></li>
+                  <li {% if not edition %}class="active"{% endif %}><a href="accueil" role="tab">Catalogue</a></li>
                   {% if user.is_authenticated %}
-                    <li><a href="mesJeux" role="tab" >Mes jeux</a></li>
+                    <li {% if edition %}class="active"{% endif %}><a href="mesJeux" role="tab" >Mes jeux</a></li>
                     <li><a href="#messages" role="tab">Mon historique</a></li>
                     <li><a href="profil/{{user.id}}" role="tab">Mon profil</a></li>
                     {% for onglet in onglets %}
@@ -56,6 +56,9 @@
                   {% endif %}
                 </ul>
                 </br>
+                {% if edition %}
+                    <button class="launch-modal"  data-url="nouveauJeu">Nouveau jeu</button></br>
+                {% endif %}
                 <div id="catalogue">
                     <!-- panel -->
                     <div class="jplist-panel">
@@ -198,7 +201,15 @@
                    <div class="list">
                        {% for jeu in jeux %}
                         <div class="list-item">
-                           <a class="launch-modal title"  href="ouvrirOnglet/{{ jeu.id }}">{{ jeu.nomDuJeu }}</a></br>
+                           <a class="title"  href="ouvrirOnglet/{{ jeu.id }}">{{ jeu.nomDuJeu }}</a></br>
+                           {% if edition %}
+                           <a class="btn btn-large btn-danger launch-modal" data-url="comfirmer/{{ jeu.id }}">
+                             <i class="fa fa-times" aria-hidden="true"></i>
+                           </a>
+                           <a class="btn btn-large btn-primary launch-modal" data-url="editer/{{ jeu.id }}">
+                             <i class="fa fa-pencil" aria-hidden="true"></i>
+                           </a></br>
+                           {% endif %}
                            {% if jeu.image|length > 0 %}
                              <img src="{{ MEDIA_URL }}{{jeu.image}}"  width="150px" class="img-rounded launch-modal"  data-url="fiche/{{ jeu.id }}">
                            {% else %}

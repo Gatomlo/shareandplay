@@ -27,10 +27,20 @@ def accueil(request):
 
 @login_required
 def mesJeux(request):
-
     jeux = Jeux.objects.filter(proprietaire=request.user.id)
+    genres = Genre.objects.all()
+    types = Type.objects.all()
+    publics = Public.objects.all()
+    edition = True
+    onglets = OngletsOuverts.objects.filter(utilisateur=request.user.id)
 
-    return render(request, 'catalogue/mesJeux.html', {'jeux': jeux})
+    return render(request, 'catalogue/catalogue.html', {'jeux': jeux,
+                                                        'genres':genres,
+                                                        'types':types,
+                                                        'edition':edition,
+                                                        'publics':publics,
+                                                        'onglets':onglets})
+
 
 @login_required
 def nouveauJeu(request):
