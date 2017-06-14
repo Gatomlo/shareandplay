@@ -20,7 +20,7 @@ class Jeux(models.Model):
     image = models.ImageField(verbose_name="Image",upload_to="photos_jeux/",blank=True)
     extension = models.BooleanField(default=False)
     proprietaire = models.ForeignKey('auth.User')
-    disponible = models.BooleanField(default=True)
+    visible = models.BooleanField(default=True)
     pretable = models.BooleanField(default=True)
     dureeDuPret = models.IntegerField(verbose_name="Durée du prêt",null=True,blank=True)
 
@@ -47,7 +47,7 @@ class Public(models.Model):
 
     def __str__(self):
         return self.nomDuPublic
-        
+
 class OngletsOuverts(models.Model):
     jeu = models.ForeignKey('Jeux', related_name='jeu')
     utilisateur = models.ForeignKey('auth.User', related_name='utilisateur')

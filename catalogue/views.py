@@ -11,7 +11,7 @@ from django.db.models import Q
 
 @login_required
 def accueil(request):
-    jeux = Jeux.objects.all()
+    jeux = Jeux.objects.filter(visible=True)
     genres = Genre.objects.all()
     types = Type.objects.all()
     publics = Public.objects.all()
@@ -87,8 +87,10 @@ def fermerOnglet(request,id):
 def profil(request,id):
 
     profil = get_object_or_404(User, id=id)
+    onglets = OngletsOuverts.objects.filter(utilisateur=request.user.id)
 
-    return render(request, 'catalogue/profil.html', {'profil': profil})
+    return render(request, 'catalogue/profil.html', {'profil': profil,
+                                                     'onglets':onglets})
 
 @login_required
 def comfirmer(request,id):
@@ -100,6 +102,17 @@ def supprimerJeu(request,id):
     jeu = get_object_or_404(Jeux, id=id)
     if jeu.proprietaire.id == request.user.id:
         jeu.delete()
+        return HttpResponseRedirect(reverse('mesJeux'))
+
+@login_required
+def cacher(request,id):
+    jeu = get_object_or_404(Jeux, id=id)
+    if jeu.proprietaire.id == request.user.id:
+        if jeu.visible == True:
+            jeu.visible = False
+        else:
+            jeu.visible = True
+        jeu.save()
         return HttpResponseRedirect(reverse('mesJeux'))
 
 @login_required
@@ -140,6 +153,8 @@ def emprunter(request,id):
             emprunt.proprietaire = jeu.proprietaire
             emprunt.emprunteur = request.user
             emprunt.jeu = jeu
+            if jeu.proprietaire == request.user:
+                emprunt.empruntValide = True
             form.save()
             return HttpResponseRedirect(reverse('accueil'))
     return render(request, 'catalogue/emprunter.html', locals(), {'jeu':jeu})

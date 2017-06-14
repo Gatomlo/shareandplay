@@ -19,5 +19,6 @@ urlpatterns = [
     url(r'^editer/(?P<id>\d+)$', views.editerJeu, name="editerJeu"),
     url(r'^editerProfil$', views.editerProfil, name="editerProfil"),
     url(r'^emprunter/(?P<id>\d+)$', views.emprunter, name="emprunter"),
+    url(r'^cacher/(?P<id>\d+)$', views.cacher, name="cacher"),
     url(r'^historique$', views.historique, name="historique"),
 ]

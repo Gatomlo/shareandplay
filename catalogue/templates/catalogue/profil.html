@@ -22,6 +22,14 @@
                     <li><a href="../mesJeux" role="tab">Mes jeux</a></li>
                     <li><a href="#messages" role="tab">Mon historique</a></li>
                     <li class="active"><a href="" role="tab">Mon profil</a></li>
+                    {% for onglet in onglets %}
+                        <li {% if onglet.jeu.id == jeu.id %} class="active" {% endif %}>
+                            <a href="{{onglet.jeu.id}}" role="tab">{{onglet.jeu.nomDuJeu}}</a>
+                            <a href="../fermerOnglet/{{onglet.id}}">
+                                <i class="fa fa-times-circle" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                    {% endfor %}
                   {% endif %}
                   </ul>
                 </div>
