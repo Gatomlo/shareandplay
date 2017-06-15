@@ -143,8 +143,9 @@ def editerProfil(request):
     return render(request, 'catalogue/editerProfil.html', locals())
 
 @login_required
-def emprunter(request,id):
+def emprunts(request,id):
     jeu = get_object_or_404(Jeux, id=id)
+    emprunts = Emprunt.objects.all()
     form = EmpruntForm(request.POST or None)
     if request.POST:
         form = EmpruntForm(request.POST or None)
@@ -157,7 +158,15 @@ def emprunter(request,id):
                 emprunt.empruntValide = True
             form.save()
             return HttpResponseRedirect(reverse('accueil'))
-    return render(request, 'catalogue/emprunter.html', locals(), {'jeu':jeu})
+    return render(request, 'catalogue/emprunter.html', locals(), {'jeu':jeu,'emprunts':emprunts})
+
+@login_required
+def emprunter(request,id,debut,fin):
+    jeu = get_object_or_404(Jeux, id=id)
+    Emprunt(jeu=jeu,dateDePret=debut,dateDeRetourPrevue=fin, emprunteur=request.user,proprietaire=jeu.proprietaire).save()
+
+    return HttpResponseRedirect(reverse('accueil'))
+
 
 @login_required
 def historique(request):

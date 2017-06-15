@@ -18,7 +18,7 @@ urlpatterns = [
     url(r'^comfirmer/(?P<id>\d+)$', views.comfirmer, name="comfirmer"),
     url(r'^editer/(?P<id>\d+)$', views.editerJeu, name="editerJeu"),
     url(r'^editerProfil$', views.editerProfil, name="editerProfil"),
-    url(r'^emprunter/(?P<id>\d+)$', views.emprunter, name="emprunter"),
+    url(r'^emprunts/(?P<id>\d+)$', views.emprunts, name="emprunts"),
     url(r'^cacher/(?P<id>\d+)$', views.cacher, name="cacher"),
     url(r'^historique$', views.historique, name="historique"),
 ]

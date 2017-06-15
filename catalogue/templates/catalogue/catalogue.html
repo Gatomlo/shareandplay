@@ -224,9 +224,9 @@
                                 </br>
                            {% endif %}
                            {% if jeu.image|length > 0 %}
-                                <img src="{{ MEDIA_URL }}{{jeu.image}}"  width="150px" class="img-rounded launch-modal"  data-url="fiche/{{ jeu.id }}">
+                                <a href="ouvrirOnglet/{{ jeu.id }}"><img src="{{ MEDIA_URL }}{{jeu.image}}"  width="150px" class="img-rounded"  ></a>
                            {% else %}
-                                <img src="{% static "picture.png" %}"  width="150px" class="img-rounded launch-modal"  data-url="fiche/{{ jeu.id }}">
+                                <a href="ouvrirOnglet/{{ jeu.id }}"><img src="{% static "picture.png" %}"  width="150px" class="img-rounded"></a>
                            {% endif %}
                             </br></br>
                            <p class="duree">{{jeu.duree}} minutes</p>

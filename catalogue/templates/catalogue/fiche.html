@@ -6,24 +6,7 @@
         <link href="{% static "fontawesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css" />
     </head>
     <body>
-        <!-- Modale -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Titre de la modale</h4>
-                    </div>
-                    <div class="modal-body">
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary"><i class="icon icon-check icon-lg"></i> Valide</button>
-                        <button type="button" class="btn btn-inverse" data-dismiss="modal"><i class="icon icon-times icon-lg"></i> Fermer</button>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="panel panel-default">
           {% if user.is_authenticated %}
           <a class="btn btn-lg btn-primary" href="../deconnexion" data-toggle="modal">Deconnexion</a>
@@ -65,29 +48,25 @@
                   <strong>Public:</strong></br>
                   {{ jeu.public }}</br></br>
                   <strong>Durée:</strong></br>
-                  Entre {{ jeu.dureeMin }} et {{ jeu.dureeMax }} minutes</br></br>
+                  Entre : {{ jeu.duree }} minutes</br></br>
                   <strong>Nombre de joueur:</strong></br>
                   De {{ jeu.nombreDeJoueurMin }} à {{ jeu.nombreDeJoueurMax }}</br></br>
                 </div>
-                <a class="btn btn-large btn-primary launch-modal" data-url="../emprunter/{{ jeu.id }}">Emprunter</a>
+                <!-- Button HTML (to Trigger Modal) -->
+                <a href="../emprunts/{{ jeu.id }}" role="button" class="btn btn-large btn-primary" data-toggle="modal" data-target="#myModal">Emprunter</a>
 
-
+                <!-- Modal HTML -->
+                <div id="myModal" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <!-- Content will be loaded here from "remote.php" file -->
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="{% static "boostrap/js/bootstrap.min.js" %}"></script>
-        <script type="text/javascript">
-          $(document).ready(function(){
-            $(".launch-modal").click(function(){
-                var content = $(this).data('url');
-              $("#myModal").modal({
-                remote: content,
-              });
-            });
-          });
-          $('#myModal').on('hide.bs.modal', function(){
-             $(this).removeData('bs.modal');
-          });
-        </script>
+
     </body>
 </html>

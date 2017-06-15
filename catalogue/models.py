@@ -69,7 +69,7 @@ class Avis(models.Model):
 class Emprunt(models.Model):
     proprietaire = models.ForeignKey('auth.User', related_name='preteur')
     emprunteur = models.ForeignKey('auth.User', related_name='emprunteur')
-    jeu  = models.ForeignKey('Jeux')
+    jeu  = models.ForeignKey('Jeux',related_name='emprunt')
     dateDeCreation = models.DateField(auto_now_add=True, auto_now=False,
                                 verbose_name="Date de création")
     dateDeRetourPrevue = models.DateField()
@@ -79,7 +79,7 @@ class Emprunt(models.Model):
     jeuRendu = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.empruntValide
+        return str(self.id)
 
 class Profil(models.Model):
     user = models.OneToOneField('auth.User',related_name='profil')

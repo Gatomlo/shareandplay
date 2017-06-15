@@ -2,28 +2,77 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="{% static "boostrap/css/bootstrap.min.css" %}" rel="stylesheet" type="text/css" />
+
         <link href="{% static "fontawesome/css/font-awesome.min.css" %}" rel="stylesheet" type="text/css" />
-        <link href="{% static "datetimepicker/css/bootstrap-datepicker.min.css" %}" rel="stylesheet" type="text/css" />
+        <link href="{% static "fullcalendar/fullcalendar.min.css" %}" rel="stylesheet" type="text/css" />
     </head>
     <body>
-        {{jeu.nomDuJeu}} - {{jeu.proprietaire}}
-        <form action="{% url 'emprunter' jeu.id %}"method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form.as_p }}
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h2>{{jeu.nomDuJeu}}</h2>
+        </div>
+        <div class="modal-body">
+            <div id='calendar'></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+            <button type="button" class="btn btn-primary" id="reservation">Réserver</button>
+        </div>
 
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <input type="submit" value="Submit" class="btn btn-default" />
-        </form>
-
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="{% static "boostrap/js/bootstrap.min.js" %}"></script>
-        <script src="{% static "datetimepicker/js/bootstrap-datepicker.min.js" %}"></script>
+        <script src="{% static "fullcalendar/lib/moment.min.js" %}"></script>
+        <script src="{% static "fullcalendar/fullcalendar.min.js" %}"></script>
         <script>
-            $(document).ready(function(){
-                $('#id_dateDePret').datepicker({format: 'dd/mm/yyyy'});
-                $('#id_dateDeRetourPrevue').datepicker({format: 'dd/mm/yyyy'});
+            $('body').on('hidden.bs.modal', '.modal', function () {
+                $(this).removeData('bs.modal');
             });
+        </script>
+        <script>
+
+        </script>
+        <script>
+            $('#calendar').fullCalendar({
+                // action au click sur la case
+                dayClick: function(date, jsEvent, view) {
+
+                // change the day's background color just for fun
+                    $(this).css('background-color', 'red');
+
+                },
+                select: function(start, end) {
+    				var eventData = {
+    					start: start,
+    					end: end
+    				};
+                    $('#reservation').click(function(){
+                        $('#calendar').fullCalendar('renderEvent', eventData, true);
+                    });
+			    },
+                selectable: true,
+                selectOverlap: false,
+                events: [
+                   {% for emprunt in emprunts %}
+                       {
+                            start:'{{emprunt.dateDePret|date:"Y-m-d"}}',
+                            end:'{{emprunt.dateDeRetourPrevue|date:"Y-m-d"}}',
+                            {% if emprunt.empruntValide %}
+                                color:'red'
+                            {% else %}
+                                color:'orange'
+                            {% endif %}
+                       }
+                        {% if loop.last %}
+                        {% else %}
+                            ,
+                        {% endif %}
+                   {% endfor %}
+               ],
+
+            })
+            // affiche le calendrier à l'ouverture de la modal
+            $('#myModal').on('shown.bs.modal', function () {
+               $("#calendar").fullCalendar('render');
+            });
+
         </script>
     </body>
 </html>
