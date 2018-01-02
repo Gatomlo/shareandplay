@@ -19,7 +19,7 @@ class Jeux(models.Model):
     duree = models.IntegerField(verbose_name='Durée',null=True,blank=True)
     image = models.ImageField(verbose_name="Image",upload_to="photos_jeux/",blank=True)
     extension = models.BooleanField(default=False)
-    proprietaire = models.ForeignKey('auth.User')
+    proprietaire = models.ForeignKey('auth.User',on_delete=models.CASCADE)
     visible = models.BooleanField(default=True)
     pretable = models.BooleanField(default=True)
     dureeDuPret = models.IntegerField(verbose_name="Durée du prêt",null=True,blank=True)
@@ -49,8 +49,8 @@ class Public(models.Model):
         return self.nomDuPublic
 
 class OngletsOuverts(models.Model):
-    jeu = models.ForeignKey('Jeux', related_name='jeu')
-    utilisateur = models.ForeignKey('auth.User', related_name='utilisateur')
+    jeu = models.ForeignKey('Jeux', related_name='jeu',on_delete=models.CASCADE)
+    utilisateur = models.ForeignKey('auth.User', related_name='utilisateur',on_delete=models.CASCADE)
 
     def __str__(self):
         return self.jeu
@@ -58,8 +58,8 @@ class OngletsOuverts(models.Model):
 class Avis(models.Model):
     titre = models.CharField(max_length=50,verbose_name="Titre")
     contenu = models.TextField(null=True,blank=True,verbose_name="Contenu")
-    auteur = models.ForeignKey('auth.User')
-    jeu = models.ForeignKey('Jeux')
+    auteur = models.ForeignKey('auth.User',on_delete=models.CASCADE)
+    jeu = models.ForeignKey('Jeux',on_delete=models.CASCADE)
     dateDeCreation = models.DateTimeField(auto_now_add=True, auto_now=False,
                                 verbose_name="Date de création")
 
@@ -67,9 +67,9 @@ class Avis(models.Model):
         return self.titre
 
 class Emprunt(models.Model):
-    proprietaire = models.ForeignKey('auth.User', related_name='preteur')
-    emprunteur = models.ForeignKey('auth.User', related_name='emprunteur')
-    jeu  = models.ForeignKey('Jeux',related_name='emprunt')
+    proprietaire = models.ForeignKey('auth.User', related_name='preteur',on_delete=models.CASCADE)
+    emprunteur = models.ForeignKey('auth.User', related_name='emprunteur',on_delete=models.CASCADE)
+    jeu  = models.ForeignKey('Jeux',related_name='emprunt',on_delete=models.CASCADE)
     dateDeCreation = models.DateField(auto_now_add=True, auto_now=False,
                                 verbose_name="Date de création")
     dateDeRetourPrevue = models.DateField()
@@ -82,7 +82,7 @@ class Emprunt(models.Model):
         return str(self.id)
 
 class Profil(models.Model):
-    user = models.OneToOneField('auth.User',related_name='profil')
+    user = models.OneToOneField('auth.User',related_name='profil',on_delete=models.CASCADE)
     avatar = models.ImageField(verbose_name="Image",upload_to="avatars/")
     telephone = models.CharField(max_length=15)
     rue = models.CharField(max_length=50)
