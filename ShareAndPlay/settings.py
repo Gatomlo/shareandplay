@@ -25,7 +25,10 @@ SECRET_KEY = '51(=*!cg*drsk7_7cs#a8(0c@80vyi2hrj+_jaf9srfcrr0qj@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+  'shareandplay-gatomlo.codeanyapp.com',
+  'port-8000.shareandplay-gatomlo.codeanyapp.com',
+]
 
 DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d','%d/%m/%Y')
 
@@ -42,13 +45,12 @@ INSTALLED_APPS = [
     'ShareAndPlay',
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]

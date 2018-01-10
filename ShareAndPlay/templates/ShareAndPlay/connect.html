@@ -1,21 +1,45 @@
+{% load static %}
+<!DOCTYPE HTML>
+<!--
+	Future Imperfect by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Share And Play</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+		<link href="{% static 'html5up/css/main.css' %}" rel="stylesheet" type="text/css" />
+		
+	</head>
+	<body>
+    <div id="wrapper">
 
-<div class="modal-header">
-  <h4>Se connecter</h4>
-</div>
-<div class="modal-body">
+				<!-- Main -->
+					<div id="main-single">
+						<!-- Post -->
+							<article class="post">
+								 <div>
+                    {% if error %}
+                    <p><strong>Utilisateur inconnu ou mauvais de mot de passe.</strong></p>
+                    {% endif %}
 
-
-{% if error %}
-<p><strong>Utilisateur inconnu ou mauvais de mot de passe.</strong></p>
-{% endif %}
-
-{% if user.is_authenticated %}
-Vous êtes connecté, {{ user.username }} !
-{% else %}
-<form method="post" action="{% url "connexion" %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Se connecter" />
-</form>
-{% endif %}
-</div>
+                    {% if user.is_authenticated %}
+                    Vous êtes connecté, {{ user.username }} !
+                    {% else %}
+                    <form method="post" action="{% url "connexion" %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" value="Se connecter" />
+                    </form>
+                    {% endif %}
+                  </div>
+							</article>
+					</div>
+			</div>
+    </div>
+	</body>
+</html>
