@@ -203,77 +203,64 @@
 
 				<!-- Main -->
 					<div id="main">
-						<!-- Mini Posts --><!-- HTML data -->
+						
+						    <!-- HTML data -->
+                   <section class="list mini-posts">
+                       {% for jeu in jeux %}
+                        <article class="list-item mini-post">
+													<header>
+														 <a class="title"  href="ouvrirOnglet/{{ jeu.id }}">{{ jeu.nomDuJeu }}</a></br>
+														 {% if edition %}
+																 <a class="btn btn-large btn-primary launch-modal" data-url="editer/{{ jeu.id }}">
+																	 <i class="fa fa-pencil" aria-hidden="true"></i>
+																 </a>
+																 <a class="btn btn-large btn-primary" href="cacher/{{ jeu.id }}">
+																			{% if jeu.visible %}
+																					<i class="fa fa-eye-slash" aria-hidden="true"></i>
+																			{% else %}
+																					<i class="fa fa-eye" aria-hidden="true"></i>
+																			{% endif %}
+																 </a>
+																 <a class="btn btn-large btn-primary launch-modal" data-url="emprunter/{{ jeu.id }}">
+																			<i class="fa fa-lock" aria-hidden="true"></i>
+																 </a>
+																 <a class="btn btn-large btn-danger launch-modal" data-url="comfirmer/{{ jeu.id }}">
+																	 <i class="fa fa-times" aria-hidden="true"></i>
+																 </a>
+																	</br>
+														 {% endif %}
+														 {% if jeu.image|length > 0 %}
+																	<a href="ouvrirOnglet/{{ jeu.id }}"><img src="{{ MEDIA_URL }}{{jeu.image}}"  width="150px" class="img-rounded"  ></a>
+														 {% else %}
+																	<a href="ouvrirOnglet/{{ jeu.id }}"><img src="{% static "picture.png" %}"  width="150px" class="img-rounded"></a>
+														 {% endif %}
+										 			 </header>
+                            </br></br>
+                           <p class="duree">{{jeu.duree}} minutes</p>
+                           {%for genre in jeu.genre.all %}
+                                <p class="{{genre.nomDuGenre}}">{{genre.nomDuGenre}}</p>
+                           {%endfor%}
+                           {%for type in jeu.typeDeJeu.all %}
+                                <p class="{{type.nomDuType}}">{{type.nomDuType}}</p>
+                           {%endfor%}
+                           {%for public in jeu.public.all %}
+                                <p class="{{public.nomDuPublic}}">{{public.nomDuPublic}}</p>
+                           {%endfor%}
+                            <p class="joueurMin">{{jeu.nombreDeJoueurMin}} joueurs (min)</p>
+                            <p class="joueurMax">{{jeu.nombreDeJoueurMax}} joueurs (max)</p>
+                            <p class="ageMin">{{jeu.ageMin}} ans</p>
+                            <p class="proprietaire">{{jeu.proprietaire}}</p>
+                            <p class="date">{{jeu.dateDeCreation}}</p>
+                           <hr>
+                        </article>
+                        {% endfor %}
+                   </section>
+						
 
-							<section>
-								<div class="mini-posts list">
-										{% for jeu in jeux %}
-										<article class="mini-post list-item">
-												<header>
-													<h3><a class="title"  href="ouvrirOnglet/{{ jeu.id }}">{{ jeu.nomDuJeu }}</a></h3></br>
-													<div>
-														<p>
-															<i class="fa fa-users" aria-hidden="true"></i>
-															<span class="joueurMin">{{jeu.nombreDeJoueurMin}}</span> à <span class="joueurMax">{{jeu.nombreDeJoueurMax}}</span>
-														</p>
-														<p>
-															<i class="fa fa-clock-o" aria-hidden="true"></i>
-															<span class="duree">{{jeu.duree}}'</span>
-														</p>
-                            <p>
-																<i class="fa fa-birthday-cake" aria-hidden="true"></i> 
-																<span class="ageMin">{{jeu.ageMin}} ans</span>
-													 	</p>
-
-														{%for genre in jeu.genre.all %}
-															<p>
-																<i class="fa fa-puzzle-piece" aria-hidden="true"></i>
-                                <span class="{{genre.nomDuGenre}}">{{genre.nomDuGenre}}</span>											
-															</p>
-                           	{%endfor%}
-                          	{%for type in jeu.typeDeJeu.all %}
-															<p>
-																<i class="fa fa-trophy" aria-hidden="true"></i>
-                                <span class="{{type.nomDuType}}">{{type.nomDuType}}</span>
-															</p>
-                         	  {%endfor%}
-                         	  {%for public in jeu.public.all %}
-															<p>
-																<i class="fa fa-child" aria-hidden="true"></i>
-                                <span class="{{public.nomDuPublic}}">{{public.nomDuPublic}}</span>
-															</p>
-                          	{%endfor%}
-														</br>
-														{% if jeu.proprietaire.profil.avatar|length > 0 %}
-														<p class="author">
-															<span class="name">Proposé par :{{jeu.proprietaire}}</span>
-															<a ><img src="{{ MEDIA_URL }}{{ jeu.proprietaire.profil.avatar }}"></div></a>
-														</p>
-														{% else %}
-														<p class="author">
-															<span class="name">Proposé par :{{jeu.proprietaire}}</span>
-															<a><img src="{% static 'picture.png' %}"></a>
-														</p>
-														{% endif %}
-												</header>
-												<div class="image">
-													{% if jeu.image|length > 0 %}
-														<a href="ouvrirOnglet/{{ jeu.id }}"><img src="{{ MEDIA_URL }}{{jeu.image}}"></a>
-													{% else %}
-														<a href="ouvrirOnglet/{{ jeu.id }}"><img src="{% static 'picture.png' %}"></a>
-													{% endif %}												
-												</div>	
-		
-										</article>
-										{% endfor %}
-									
-								</div>
-							</section>
-
-					<!-- no results found 
-					<div class="jplist-no-results">
-						 <p>No results found</p>
-					</div>-->
+						<!-- no results found --> 
+						<div class="jplist-no-results">
+							 <p>No results found</p>
+						</div>
 
 					</div>
 
